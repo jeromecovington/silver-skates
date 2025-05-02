@@ -13,3 +13,15 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Article {
+  id               String   @id @default(cuid())
+  title            String
+  body             String
+  source           String
+  publishedAt      DateTime
+  biasRating       String?
+  credibilityScore Float?
+  clusters         String[]
+  createdAt        DateTime @default(now())
+}
