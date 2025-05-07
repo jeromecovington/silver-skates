@@ -23,5 +23,7 @@ model Article {
   biasRating       String?
   credibilityScore Float?
   clusters         String[]
+  keywords         String[]  // e.g., ["inflation", "legislation"]
+  embedding        Float[]   // 384-dim vector from MiniLM
   createdAt        DateTime @default(now())
 }
