@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cluster": "ts-node --project tsconfig.scripts.json --loader ts-node/esm src/scripts/cluster-articles.ts"
+    "cluster": "node --loader ts-node/esm src/scripts/cluster-articles.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
