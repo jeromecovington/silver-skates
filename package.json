@@ -2,11 +2,13 @@
   "name": "silver-skates-scaffold",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cluster": "ts-node --project tsconfig.scripts.json --loader ts-node/esm src/scripts/cluster-articles.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
