@@ -1,32 +1,48 @@
 import { PrismaClient } from '@prisma/client';
-import kmeans from 'ml-kmeans';
+import kmeans from 'kmeans-ts';
+
+const prisma = new PrismaClient();
 
 type ArticleWithEmbedding = {
   id: string;
   embedding: number[];
 };
 
-const prisma = new PrismaClient();
-
 async function runClustering() {
   const articles: ArticleWithEmbedding[] = await prisma.article.findMany({
-    where: { embedding: { not: null } },
-    select: { id: true, embedding: true },
+    where: {
+      NOT: {
+        embedding: {
+          equals: [],
+        },
+      },
+    },
+    select: {
+      id: true,
+      embedding: true,
+    },
   });
 
-  const vectors = articles.map((a) => a.embedding);
-  const k = 5; // can tune this later
+  if (articles.length === 0) {
+    console.log('No articles with embeddings found.');
+    return;
+  }
 
-  const { clusters } = kmeans(vectors, k);
+  const vectors = articles.map((a) => a.embedding);
+  const k = Math.min(5, articles.length); // Avoid over-clustering
+
+  const result = kmeans(vectors, k, 'kmeans');
 
   for (let i = 0; i < articles.length; i++) {
     await prisma.article.update({
       where: { id: articles[i].id },
-      data: { clusters: [`cluster_${clusters[i]}`] },
+      data: { clusters: [`cluster_${result.indexes[i]}`] },
     });
   }
 
   console.log(`Clustered ${articles.length} articles into ${k} groups.`);
 }
 
-runClustering();
+runClustering().catch((err) => {
+  console.error('Clustering failed:', err);
+});
