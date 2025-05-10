@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📰 News Summarization Proof of Concept
 
-## Getting Started
+A Next.js + TypeScript project for ingesting, embedding, clustering, and exploring news articles.
 
-First, run the development server:
+---
+
+## 🚀 Setup
+
+### 1. Clone the repo and install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/news-summarizer.git
+cd news-summarizer
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file at the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```dotenv
+NEWS_API_KEY=your_newsapi_key
+INGEST_SECRET=your_custom_token
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🗄️ Postgres Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Option A: Docker (recommended for local dev)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+docker run --name news-postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=mydb \
+  -p 5432:5432 \
+  -d postgres:15
+```
 
-## Deploy on Vercel
+### Option B: Local Postgres install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Make sure Postgres is running and create the `mydb` database:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+createdb mydb
+```
+
+---
+
+## 🧱 Prisma
+
+### 1. Generate Prisma client
+
+```bash
+npx prisma generate
+```
+
+### 2. Run DB migration
+
+```bash
+npx prisma migrate dev --name init
+```
+
+---
+
+## ⚙️ Ingest → Cluster → Preview
+
+### ✅ Ingest articles from NewsAPI
+
+```bash
+curl "http://localhost:3000/api/ingest?token=your_custom_token"
+```
+
+This will:
+- Fetch new articles
+- Deduplicate
+- Extract keywords
+- Generate MiniLM embeddings
+- Store in Postgres
+
+---
+
+### ✅ Cluster articles by semantic similarity
+
+```bash
+ts-node src/scripts/cluster-articles.ts
+```
+
+This uses K-Means clustering on embeddings and stores cluster IDs in each article.
+
+---
+
+### ✅ Preview recent articles
+
+```bash
+curl "http://localhost:3000/api/preview?token=your_custom_token"
+```
+
+Returns latest articles, including keywords and cluster assignments.
+
+---
+
+## 🛠 Scripts Summary
+
+| Script                         | Description                    |
+|-------------------------------|--------------------------------|
+| `/api/ingest` (GET)           | Ingest articles                |
+| `/api/preview` (GET)          | View recent article data       |
+| `src/scripts/cluster-articles.ts` | Run K-Means clustering     |
+
+---
+
+## 🧪 Notes
+
+- Embeddings generated via `@xenova/transformers` (MiniLM)
+- Clustering via `ml-kmeans`
+- Keywords via TF-IDF from `natural`
+
