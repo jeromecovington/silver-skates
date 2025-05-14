@@ -24,5 +24,6 @@ model Article {
   clusters         String[]
   keywords         String[]  // e.g., ["inflation", "legislation"]
   embedding        Float[]   // 384-dim vector from MiniLM
+  summary          String?
   createdAt        DateTime @default(now())
 }
