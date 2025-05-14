@@ -84,10 +84,20 @@ This will:
 ### ✅ Cluster articles by semantic similarity
 
 ```bash
-ts-node src/scripts/cluster-articles.ts
+yarn cluster
 ```
 
 This uses K-Means clustering on embeddings and stores cluster IDs in each article.
+
+---
+
+### ✅ Summarize articles with GPT
+
+```bash
+yarn summarize
+```
+
+This uses OpenAI’s `gpt-3.5-turbo` model to generate concise 2–3 sentence summaries for articles that do not yet have a summary. Summaries are stored in the summary field of each article and surfaced via the `/api/preview` endpoint.
 
 ---
 
