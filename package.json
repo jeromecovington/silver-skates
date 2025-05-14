@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cluster": "node --loader ts-node/esm src/scripts/cluster-articles.ts"
+    "cluster": "node --loader ts-node/esm src/scripts/cluster-articles.ts",
+    "summarize": "node --loader ts-node/esm src/scripts/summarize-articles.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
