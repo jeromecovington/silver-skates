@@ -27,3 +27,9 @@ model Article {
   summary          String?
   createdAt        DateTime @default(now())
 }
+
+model ClusterSummary {
+  id        String   @id
+  summary   String
+  createdAt DateTime @default(now())
+}
