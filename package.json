@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "cluster": "node --loader ts-node/esm src/scripts/cluster-articles.ts",
-    "summarize": "node --loader ts-node/esm src/scripts/summarize-articles.ts"
+    "summarize": "node --loader ts-node/esm src/scripts/summarize-articles.ts",
+    "describe-clusters": "node --loader ts-node/esm src/scripts/describe-clusters.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
