@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
         normalize: true,
       });
 
-      const embedding = Array.from(embeddingResult.data[0]);
+      const embedding = Array.from(embeddingResult.data) as number[];
 
       // --- Save to DB ---
       const saved = await prisma.article.create({

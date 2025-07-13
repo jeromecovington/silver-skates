@@ -9,8 +9,8 @@ A Next.js + TypeScript project for ingesting, embedding, clustering, and explori
 ### 1. Clone the repo and install dependencies
 
 ```bash
-git clone https://github.com/your-username/news-summarizer.git
-cd news-summarizer
+git clone https://github.com/jeromecovington/silver-skates.git
+cd silver-skates
 yarn install
 ```
 

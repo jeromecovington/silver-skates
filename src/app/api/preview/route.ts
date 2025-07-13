@@ -18,7 +18,18 @@ export async function GET(req: NextRequest) {
       take: 20,
     });
 
-    return NextResponse.json({ articles });
+    const summaries = await prisma.clusterSummary.findMany();
+    const summariesById = Object.fromEntries(summaries.map(s => [s.id, s.summary]));
+
+    const enriched = articles.map((article) => ({
+      ...article,
+      clusterSummaries: article.clusters.map((clusterId) => ({
+        id: clusterId,
+        summary: summariesById[clusterId] ?? null,
+      })),
+    }));
+
+    return NextResponse.json({ enriched });
   } catch (error) {
     console.error('[preview] error', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
