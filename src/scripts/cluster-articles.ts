@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import kmeans from 'kmeans-ts';
+import { kmeans } from 'ml-kmeans';
 
 const prisma = new PrismaClient();
 
@@ -29,14 +29,14 @@ async function runClustering() {
   }
 
   const vectors = articles.map((a) => a.embedding);
-  const k = Math.min(5, articles.length); // Avoid over-clustering
+  const k = Math.min(5, articles.length); // avoid overfitting
 
-  const result = kmeans(vectors, k, 'kmeans');
+  const result = kmeans(vectors, k, {}); // returns { clusters, centroids }
 
   for (let i = 0; i < articles.length; i++) {
     await prisma.article.update({
       where: { id: articles[i].id },
-      data: { clusters: [`cluster_${result.indexes[i]}`] },
+      data: { clusters: [`cluster_${result.clusters[i]}`] },
     });
   }
 
