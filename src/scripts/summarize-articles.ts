@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { OpenAI } from 'openai';
 
+import { getSystemPrompt, getUserPrompt } from '../prompts/summarize-articles'
+
 const prisma = new PrismaClient();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -20,14 +22,8 @@ async function run() {
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        {
-          role: 'system',
-          content: 'Summarize this article concisely in 2-3 sentences.',
-        },
-        {
-          role: 'user',
-          content,
-        },
+        getSystemPrompt(),
+        getUserPrompt(content),
       ],
     });
 
