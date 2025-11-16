@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { OpenAI } from 'openai';
+
+import { RemoteLLMClient } from '../lib/llm/remote-client'
+import { getSystemPrompt, getUserPrompt } from '../prompts/describe-clusters';
 
 const prisma = new PrismaClient();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const llmClient = new RemoteLLMClient();
 
 async function run() {
   // Step 1: Get all articles with clusters
@@ -41,19 +43,10 @@ async function run() {
       .map((item, i) => `${i + 1}. ${item.title}${item.summary ? ': ' + item.summary : ''}`)
       .join('\n');
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a journalist summarizing groups of news stories for a civic dashboard.',
-        },
-        {
-          role: 'user',
-          content: `Summarize the following cluster of news stories in 1–2 sentences:\n\n${context}`,
-        },
-      ],
-    });
+    const completion = await llmClient.create([
+      getSystemPrompt(),
+      getUserPrompt(context),
+    ]);
 
     const summary = completion.choices[0].message.content ?? '';
 

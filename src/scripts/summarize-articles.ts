@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { OpenAI } from 'openai';
+
+import { RemoteLLMClient } from '../lib/llm/remote-client'
+import { getSystemPrompt, getUserPrompt } from '../prompts/summarize-articles'
 
 const prisma = new PrismaClient();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const llmClient = new RemoteLLMClient();
 
 async function run() {
   const articles = await prisma.article.findMany({
@@ -17,19 +19,10 @@ async function run() {
 
   for (const article of articles) {
     const content = `${article.title}\n\n${article.body}`;
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content: 'Summarize this article concisely in 2-3 sentences.',
-        },
-        {
-          role: 'user',
-          content,
-        },
-      ],
-    });
+    const completion = await llmClient.create([
+      getSystemPrompt(),
+      getUserPrompt(content)
+    ]);
 
     const summary = completion.choices[0].message.content ?? '';
 
