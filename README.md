@@ -69,7 +69,8 @@ npx prisma migrate dev --name init
 ### ✅ Ingest articles from NewsAPI
 
 ```bash
-curl "http://localhost:3000/api/ingest?token=your_custom_token"
+curl -X POST http://localhost:3000/api/ingest \
+  -H "Authorization: Bearer your_custom_token"
 ```
 
 This will:
