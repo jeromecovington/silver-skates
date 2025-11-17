@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { RemoteLLMClient } from '../lib/llm/remote-client'
+import { create } from '../lib/llm'
 import { getSystemPrompt, getUserPrompt } from '../prompts/summarize-articles'
 
 const prisma = new PrismaClient();
@@ -19,7 +19,7 @@ async function run() {
 
   for (const article of articles) {
     const content = `${article.title}\n\n${article.body}`;
-    const completion = await llmClient.create([
+    const completion = await create([
       getSystemPrompt(),
       getUserPrompt(content)
     ]);
