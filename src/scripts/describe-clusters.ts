@@ -1,10 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
-import { RemoteLLMClient } from '../lib/llm/remote-client'
+import { create } from '../lib/llm'
 import { getSystemPrompt, getUserPrompt } from '../prompts/describe-clusters';
 
 const prisma = new PrismaClient();
-const llmClient = new RemoteLLMClient();
 
 async function run() {
   // Step 1: Get all articles with clusters
@@ -43,7 +42,7 @@ async function run() {
       .map((item, i) => `${i + 1}. ${item.title}${item.summary ? ': ' + item.summary : ''}`)
       .join('\n');
 
-    const completion = await llmClient.create([
+    const completion = await create([
       getSystemPrompt(),
       getUserPrompt(context),
     ]);
