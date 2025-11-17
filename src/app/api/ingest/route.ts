@@ -8,8 +8,14 @@ const prisma = new PrismaClient();
 
 let embedder: any = null;
 
-export async function GET(req: NextRequest) {
-  const token = req.nextUrl.searchParams.get('token');
+export async function POST(req: NextRequest) {
+  // Read the Authorization header
+  const authHeader = req.headers.get('Authorization');
+  const token = authHeader?.startsWith('Bearer ')
+    ? authHeader.slice(7).trim()
+    : null;
+
+  // Verify token
   if (token !== process.env.INGEST_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
