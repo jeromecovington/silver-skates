@@ -53,13 +53,13 @@ createdb mydb
 ### 1. Generate Prisma client
 
 ```bash
-npx prisma generate
+npx prisma@6 generate
 ```
 
 ### 2. Run DB migration
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma@6 migrate dev --name init
 ```
 
 ---
@@ -67,6 +67,14 @@ npx prisma migrate dev --name init
 ## ⚙️ Ingest → Cluster → Preview
 
 ### ✅ Ingest articles from NewsAPI
+
+#### Preferred method: script
+
+```bash
+yarn ingest
+```
+
+#### Deprecated method: api call
 
 ```bash
 curl -X POST http://localhost:3000/api/ingest \
