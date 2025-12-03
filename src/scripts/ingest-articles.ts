@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
-import { TfIdf } from 'natural';
+import natural from 'natural';
 import { pipeline } from '@xenova/transformers';
+
+const { TfIdf } = natural;
 
 const prisma = new PrismaClient();
 
