@@ -4,7 +4,6 @@ import { create } from '../lib/llm'
 import { getSystemPrompt, getUserPrompt } from '../prompts/summarize-articles'
 
 const prisma = new PrismaClient();
-const llmClient = new RemoteLLMClient();
 
 async function run() {
   const articles = await prisma.article.findMany({

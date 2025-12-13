@@ -16,6 +16,15 @@ interface ChatMessage {
   content: string;
 }
 
+interface LLMCompletion {
+  choices: {
+    message: {
+      role: 'assistant';
+      content: string;
+    };
+  }[];
+};
+
 interface OllamaChatResponse {
   model: string;
   created_at: string;
@@ -39,13 +48,13 @@ export class LocalLLMClient {
    * Sends chat messages to a locally hosted Ollama model.
    * Returns the assistant's full reply as a string.
    */
-  async create(messages: ChatMessage[]): Promise<string> {
+  async create(messages: ChatMessage[]): Promise<LLMCompletion> {
     const url = `${this.baseUrl}/api/chat`;
 
     const body = {
       model: this.model,
       messages,
-      stream: false, // no streaming for batch jobs
+      stream: false,
     };
 
     const response = await fetch(url, {
@@ -64,6 +73,15 @@ export class LocalLLMClient {
     const data: OllamaChatResponse = await response.json();
     const content = data?.message?.content ?? '';
 
-    return content.trim();
+    return {
+      choices: [
+        {
+          message: {
+            role: 'assistant',
+            content: content.trim(),
+          },
+        },
+      ],
+    };
   }
 }
