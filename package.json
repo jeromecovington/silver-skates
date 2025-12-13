@@ -8,10 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ingest": "node --loader ts-node/esm src/scripts/ingest-articles.ts",
-    "cluster": "node --loader ts-node/esm src/scripts/cluster-articles.ts",
-    "summarize": "node --loader ts-node/esm src/scripts/summarize-articles.ts",
-    "describe-clusters": "node --loader ts-node/esm src/scripts/describe-clusters.ts"
+    "typecheck": "tsc --noEmit",
+    "ingest": "bun src/scripts/ingest-articles.ts",
+    "cluster": "bun src/scripts/cluster-articles.ts",
+    "summarize": "bun src/scripts/summarize-articles.ts",
+    "describe-clusters": "bun src/scripts/describe-clusters.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
@@ -35,7 +36,6 @@
     "eslint-config-next": "15.3.1",
     "prisma": "^6.7.0",
     "tailwindcss": "^4",
-    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
 }
