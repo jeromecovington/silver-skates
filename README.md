@@ -1,10 +1,10 @@
-# 📰 News Summarization Proof of Concept
+# News Summarization Proof of Concept
 
 A Next.js + TypeScript project for ingesting, embedding, clustering, and exploring news articles.
 
 ---
 
-## 🚀 Setup
+## Setup
 
 ### 1. Clone the repo and install dependencies
 
@@ -12,6 +12,10 @@ A Next.js + TypeScript project for ingesting, embedding, clustering, and explori
 git clone https://github.com/jeromecovington/silver-skates.git
 cd silver-skates
 yarn install
+```
+
+```bash
+npm install -g bun
 ```
 
 ### 2. Configure environment
@@ -26,7 +30,7 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
 
 ---
 
-## 🗄️ Postgres Setup
+## Postgres Setup
 
 ### Option A: Docker (recommended for local dev)
 
@@ -48,7 +52,7 @@ createdb mydb
 
 ---
 
-## 🧱 Prisma
+## Prisma
 
 ### 1. Generate Prisma client
 
@@ -64,14 +68,14 @@ npx prisma@6 migrate dev --name init
 
 ---
 
-## ⚙️ Ingest → Cluster → Preview
+## Ingest > Cluster > Preview
 
 ### ✅ Ingest articles from NewsAPI
 
 #### Preferred method: script
 
 ```bash
-yarn ingest
+bun run ingest
 ```
 
 #### Deprecated method: api call
@@ -90,27 +94,38 @@ This will:
 
 ---
 
-### ✅ Cluster articles by semantic similarity
+### Cluster articles by semantic similarity
 
 ```bash
-yarn cluster
+bun run cluster
 ```
 
 This uses K-Means clustering on embeddings and stores cluster IDs in each article.
 
 ---
 
-### ✅ Summarize articles with GPT
+### Summarize articles with GPT or local model
 
+#### GPT (default)
 ```bash
-yarn summarize
+bun run summarize
 ```
 
 This uses OpenAI’s `gpt-3.5-turbo` model to generate concise 2–3 sentence summaries for articles that do not yet have a summary. Summaries are stored in the summary field of each article and surfaced via the `/api/preview` endpoint.
 
+#### Local Model
+```bash
+LLM_MODE=local \
+LLM_BASE_URL=http://localhost:11434 \
+LLM_MODEL=mistral \
+bun run summarize
+```
+
+This assumes Ollama running locally or on your LAN, and installation of the `mistral` model.
+
 ---
 
-### ✅ Preview recent articles
+### Preview recent articles
 
 ```bash
 curl "http://localhost:3000/api/preview?token=your_custom_token"
@@ -120,7 +135,7 @@ Returns latest articles, including keywords and cluster assignments.
 
 ---
 
-## 🛠 Scripts Summary
+## Scripts Summary
 
 | Script                         | Description                    |
 |-------------------------------|--------------------------------|
@@ -130,7 +145,7 @@ Returns latest articles, including keywords and cluster assignments.
 
 ---
 
-## 🧪 Notes
+## Notes
 
 - Embeddings generated via `@xenova/transformers` (MiniLM)
 - Clustering via `ml-kmeans`
