@@ -62,14 +62,14 @@ export async function fetchPreviewData(
     );
   }
 
-  const data = await res.json();
+  const { enriched } = await res.json();
 
   /**
    * Defensive normalization:
    * - ensure array
    * - strip embeddings early
    */
-  return Array.isArray(data)
-    ? data.map(stripNonLLMFields)
+  return Array.isArray(enriched)
+    ? enriched.map(stripNonLLMFields)
     : [];
 }
