@@ -68,7 +68,11 @@ export async function POST(req: NextRequest) {
 
   const response = await create(messages);
 
+  const content =
+    response?.choices?.[0]?.message?.content ??
+    'No response from model';
+
   return NextResponse.json({
-    reply: response,
+    reply: content,
   });
 }
