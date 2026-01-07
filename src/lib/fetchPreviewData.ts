@@ -47,9 +47,7 @@ export async function fetchPreviewData(
     params.set('toDate', scope.toDate);
   }
 
-  const url = `${PREVIEW_API_URL}?${params.toString()}`;
-
-  const res = await fetch(url, {
+  const res = await fetch(PREVIEW_API_URL, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
