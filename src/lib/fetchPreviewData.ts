@@ -1,10 +1,6 @@
 import 'server-only';
 
-const PREVIEW_API_URL = process.env.PREVIEW_API_URL;
-
-if (!PREVIEW_API_URL) {
-  throw new Error('PREVIEW_API_URL is not defined');
-}
+const PREVIEW_API_URL = process.env.PREVIEW_API_URL ?? `http://localhost:3000/api/preview?token=${process.env.INGEST_SECRET}`;
 
 type PreviewScope = {
   limit?: number;
