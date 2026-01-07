@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     const articles = await prisma.article.findMany({
       orderBy: { createdAt: 'desc' },
-      take: 20,
+      take: Number(process.env.INGEST_MAX_RESULTS ?? 100),
     });
 
     const summaries = await prisma.clusterSummary.findMany();

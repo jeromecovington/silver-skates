@@ -12,7 +12,7 @@ async function run() {
         equals: null
       }
     },
-    take: 20, // adjust for safety
+    take: Number(process.env.INGEST_MAX_RESULTS ?? 100),
     select: { id: true, title: true, body: true },
   });
 
