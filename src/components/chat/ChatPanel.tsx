@@ -83,7 +83,7 @@ function MessageList({
       {messages.map((m, i) => (
         <div
           key={i}
-          className={`p-2 rounded ${
+          className={`p-2 rounded text-black ${
             m.role === 'user'
               ? 'bg-blue-100 self-end'
               : 'bg-gray-100'
