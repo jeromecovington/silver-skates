@@ -12,7 +12,7 @@ async function run() {
         equals: null
       }
     },
-    take: 5, // adjust for safety
+    take: 20, // adjust for safety
     select: { id: true, title: true, body: true },
   });
 
