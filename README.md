@@ -1,6 +1,6 @@
 # News Summarization Proof of Concept
 
-A Next.js + TypeScript project for ingesting, embedding, clustering, and exploring news articles.
+A Next.js + TypeScript project leveraging OpenAI or Ollama for ingesting, embedding, clustering, and exploring news articles.
 
 ---
 
