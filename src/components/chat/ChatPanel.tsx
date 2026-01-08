@@ -36,7 +36,9 @@ function ScopeControls({
         >
           <option value={5}>5 articles</option>
           <option value={10}>10 articles</option>
-          <option value={20}>20 articles</option>
+          <option value={25}>25 articles</option>
+          <option value={50}>50 articles</option>
+          <option value={100}>100 articles</option>
         </select>
       </div>
 

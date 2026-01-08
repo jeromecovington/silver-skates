@@ -25,7 +25,7 @@ export async function fetchPreviewData(
 ): Promise<any[]> {
   const params = new URLSearchParams();
 
-  params.set('limit', String(scope.limit ?? 20));
+  params.set('limit', String(scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100)));
 
   scope.clusterIds?.forEach((id) =>
     params.append('clusterId', id),
@@ -47,6 +47,7 @@ export async function fetchPreviewData(
     params.set('toDate', scope.toDate);
   }
 
+  // TODO: Pass & use query params.
   const res = await fetch(PREVIEW_API_URL, {
     method: 'GET',
     headers: {

@@ -44,25 +44,41 @@ export async function POST(req: NextRequest) {
 
   const context = shapeContext(previewData, {
     includeBodies,
-    maxArticles: 15,
+    maxArticles: scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100),
   });
 
   const messages = [
     {
       role: 'system',
       content: `
-  You are an analytical assistant helping users explore and reason about a news dataset.
-  Base your answers strictly on the provided context.
-  If information is missing or unclear, say so explicitly.
+  You are an analytical assistant helping a user explore and reason about a specific set of news articles.
+
+  Think of it as if you are operating in a STRICT CONTEXT MODE, using only the articles below.
+
+  You may be asked to identify trends, broad topics, or relationships between ONLY the provided articles.
+
+  The articles below are the COMPLETE SOURCE material you are working from.
+  Please focus on ONLY what the provided articles themselves say.
+
+  Guidelines:
+  - Look through the provided articles ONLY and identify any passages or claims that directly relate to the question.
+  - Use only information that appears ONLY in the provided articles.
+  - If an article is not relevant to the question, ignore it.
       `.trim(),
     },
     {
       role: 'system',
-      content: renderContext(context),
+      content: `
+  Articles:
+  ${renderContext(context)}
+      `.trim(),
     },
     {
       role: 'user',
-      content: message,
+      content: `
+  Question:
+  ${message}
+      `.trim(),
     },
   ];
 
