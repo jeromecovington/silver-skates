@@ -125,6 +125,15 @@ This assumes Ollama running locally or on your LAN, and installation of the `mis
 
 ---
 
+### Pipeline
+
+Ingestion, clustering, and summarizing can be run sequentially using:
+```bash
+bun run pipeline
+```
+
+---
+
 ### Preview recent articles
 
 ```bash

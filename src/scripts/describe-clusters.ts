@@ -38,7 +38,7 @@ async function run() {
     }
 
     const context = items
-      .slice(0, 10) // limit to first 10 items per cluster
+      .slice(0, 50) // limit to first 50 items per cluster
       .map((item, i) => `${i + 1}. ${item.title}${item.summary ? ': ' + item.summary : ''}`)
       .join('\n');
 

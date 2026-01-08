@@ -12,7 +12,8 @@
     "ingest": "bun src/scripts/ingest-articles.ts",
     "cluster": "bun src/scripts/cluster-articles.ts",
     "summarize": "bun src/scripts/summarize-articles.ts",
-    "describe-clusters": "bun src/scripts/describe-clusters.ts"
+    "describe-clusters": "bun src/scripts/describe-clusters.ts",
+    "pipeline": "bun run ingest && bun run cluster && bun run summarize && bun run describe-clusters"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
