@@ -44,25 +44,54 @@ export async function POST(req: NextRequest) {
 
   const context = shapeContext(previewData, {
     includeBodies,
-    maxArticles: 15,
+    maxArticles: Number(process.env.INGEST_MAX_RESULTS ?? 100),
   });
 
   const messages = [
     {
       role: 'system',
       content: `
-  You are an analytical assistant helping users explore and reason about a news dataset.
-  Base your answers strictly on the provided context.
-  If information is missing or unclear, say so explicitly.
+  You are an analytical assistant helping a user explore a specific set of news articles.
+
+  In this step, your task is ONLY to identify which parts of the provided articles are relevant to the user's question.
+
+  The articles below are the complete source material you are working from.
+  Please focus on what the articles themselves say.
+
+  Guidelines:
+  - Look through the articles and identify any passages or claims that directly relate to the question.
+  - Use only information that appears in the provided articles.
+  - If an article is not relevant to the question, ignore it.
+  - If none of the articles address the question, return an empty list.
+  - Excerpts may be brief paraphrases, but they should faithfully reflect the article content.
+
+  Return your response as a JSON array in the following format:
+
+  [
+    {
+      "article": <number>,
+      "excerpt": "<relevant excerpt or paraphrase>"
+    }
+  ]
+
+  If there is no relevant information in the articles, return:
+
+  []
       `.trim(),
     },
     {
       role: 'system',
-      content: renderContext(context),
+      content: `
+  Articles:
+  ${renderContext(context)}
+      `.trim(),
     },
     {
       role: 'user',
-      content: message,
+      content: `
+  Question:
+  ${message}
+      `.trim(),
     },
   ];
 
