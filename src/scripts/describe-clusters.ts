@@ -33,7 +33,9 @@ async function run() {
   for (const [clusterId, items] of Object.entries(clusterGroups)) {
     const context = items
       .slice(0, 50) // limit to first 50 items per cluster
-      .map((item, i) => `${i + 1}. ${item.title}${item.summary ? ': ' + item.summary : ''}`)
+      .map(item =>
+        `• ${item.title}${item.summary ? ': ' + item.summary : ''}`
+      )
       .join('\n');
 
     const completion = await create([

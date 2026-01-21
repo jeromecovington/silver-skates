@@ -1,13 +1,29 @@
 export function getSystemPrompt() {
   return {
     role: 'system',
-    content: 'You are a journalist summarizing groups of news stories for a civic dashboard.',
-  }
-};
+    content: `
+You are a journalist writing a concise thematic description of a group of related news stories.
+
+Your task is to describe the *shared theme or narrative* across the stories,
+not to list, enumerate, or recap individual articles.
+    `.trim(),
+  };
+}
 
 export function getUserPrompt(context: string) {
   return {
     role: 'user',
-    content: `Summarize the following cluster of news stories in 1–2 sentences:\n\n${context}`,
-  }
+    content: `
+Write a 1–2 sentence narrative summary describing the common theme of the following news stories.
+
+Important:
+- Do NOT list or number articles.
+- Do NOT mention individual headlines.
+- Do NOT enumerate examples.
+- Write a single, cohesive paragraph that abstracts across the stories.
+
+News stories:
+${context}
+    `.trim(),
+  };
 }
