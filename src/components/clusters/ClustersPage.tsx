@@ -18,7 +18,7 @@ type Cluster = {
 
 export function ClustersPage({ clusters }: { clusters: Cluster[] }) {
   return (
-    <main>
+    <main className="mx-6 my-8">
       {clusters.map(cluster => (
         <ClusterCard key={cluster.id} cluster={cluster} />
       ))}
@@ -30,13 +30,13 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="mb-8">
-      <h2 onClick={() => setOpen(!open)}>
+    <section className="mb-4 border-b pb-4">
+      <h2 className="cursor-pointer font-bold" onClick={() => setOpen(!open)}>
         {cluster.title}
       </h2>
 
       {open && (
-        <ul>
+        <ul className="mt-2">
           {cluster.articles.map(article => (
             <ArticleItem key={article.id} article={article} />
           ))}
