@@ -31,12 +31,6 @@ async function run() {
 
   // Step 3: Generate and store cluster summaries
   for (const [clusterId, items] of Object.entries(clusterGroups)) {
-    const existing = await prisma.clusterSummary.findUnique({ where: { id: clusterId } });
-    if (existing) {
-      console.log(`Skipping ${clusterId} (already summarized)`);
-      continue;
-    }
-
     const context = items
       .slice(0, 50) // limit to first 50 items per cluster
       .map((item, i) => `${i + 1}. ${item.title}${item.summary ? ': ' + item.summary : ''}`)
@@ -49,8 +43,12 @@ async function run() {
 
     const summary = completion.choices[0].message.content ?? '';
 
-    await prisma.clusterSummary.create({
-      data: {
+    await prisma.clusterSummary.upsert({
+      where: { id: clusterId },
+      update: {
+        summary,
+      },
+      create: {
         id: clusterId,
         summary,
       },

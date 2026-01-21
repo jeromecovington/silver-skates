@@ -29,7 +29,7 @@ async function runClustering() {
   }
 
   const vectors = articles.map((a) => a.embedding);
-  const k = Math.min(5, articles.length); // avoid overfitting
+  const k = Math.min(10, articles.length); // avoid overfitting
 
   const result = kmeans(vectors, k, {}); // returns { clusters, centroids }
 
