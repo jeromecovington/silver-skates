@@ -9,14 +9,12 @@
  *   LLM_MODEL    (default: llama3)
  */
 
-import type { IncomingMessage } from 'http';
-
-interface ChatMessage {
+export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
 
-interface LLMCompletion {
+export interface LLMCompletion {
   choices: {
     message: {
       role: 'assistant';

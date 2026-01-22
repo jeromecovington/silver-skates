@@ -1,8 +1,24 @@
 import { ClustersPage as ClustersPageComponent } from '@/components/clusters/ClustersPage';
 import { fetchPreviewData } from '@/lib/fetchPreviewData';
+import { ArticlePreview } from '@/types';
 
-function buildClusters(articles: any[]) {
-  const clusters = new Map<string, any>();
+export type ClusterSummary = {
+  id: string;
+  summary: string;
+};
+
+export type ArticleWithClusters = ArticlePreview & {
+  clusterSummaries?: ClusterSummary[];
+};
+
+export type Cluster = {
+  id: string;
+  title: string;
+  articles: ArticleWithClusters[];
+};
+
+function buildClusters(articles: ArticleWithClusters[]) {
+  const clusters = new Map<string, Cluster>();
 
   for (const article of articles) {
     for (const cluster of article.clusterSummaries ?? []) {
@@ -14,13 +30,13 @@ function buildClusters(articles: any[]) {
         });
       }
 
-      clusters.get(cluster.id).articles.push(article);
+      clusters.get(cluster.id)?.articles.push(article);
     }
   }
 
   for (const cluster of clusters.values()) {
     cluster.articles.sort(
-      (a, b) =>
+      (a: ArticleWithClusters, b: ArticleWithClusters) =>
         new Date(b.publishedAt).getTime() -
         new Date(a.publishedAt).getTime()
     );

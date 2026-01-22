@@ -1,4 +1,6 @@
-export function getSystemPrompt() {
+import { ChatMessage } from "@/lib/llm/local-client";
+
+export function getSystemPrompt(): ChatMessage {
   return {
     role: 'system',
     content: `
@@ -10,7 +12,7 @@ not to list, enumerate, or recap individual articles.
   };
 }
 
-export function getUserPrompt(context: string) {
+export function getUserPrompt(context: string): ChatMessage {
   return {
     role: 'user',
     content: `

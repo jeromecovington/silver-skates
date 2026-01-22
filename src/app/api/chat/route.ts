@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { create } from '@/lib/llm';
 import { fetchPreviewData } from '@/lib/fetchPreviewData';
+import { ChatMessage } from '@/lib/llm/local-client';
+import { ArticlePreview, ShapedArticleContext } from '@/types';
 
 function shapeContext(
-  articles: any[],
+  articles: ArticlePreview[],
   opts: { includeBodies: boolean; maxArticles: number }
-) {
+): ShapedArticleContext[] {
   return articles.slice(0, opts.maxArticles).map((a, idx) => ({
     index: idx + 1,
     title: a.title,
@@ -16,7 +18,7 @@ function shapeContext(
   }));
 }
 
-function renderContext(context: any[]) {
+function renderContext(context: ShapedArticleContext[]) {
   return context
     .map((a) => {
       return `
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
     maxArticles: scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100),
   });
 
-  const messages = [
+  const messages: ChatMessage[] = [
     {
       role: 'system',
       content: `

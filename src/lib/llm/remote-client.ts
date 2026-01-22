@@ -27,8 +27,6 @@ export class RemoteLLMClient {
       messages,
     });
 
-    // Extract the assistant’s reply text
-    const response = completion.choices?.[0]?.message?.content ?? '';
-    return response.trim();
+    return completion;
   }
 }
