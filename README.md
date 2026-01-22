@@ -142,17 +142,20 @@ curl "http://localhost:3000/api/preview?token=your_custom_token"
 
 Returns latest articles, including keywords and cluster assignments.
 
----
+## Web App
 
-## Scripts Summary
+Start the application locally, e.g.
+```bash
+yarn run dev
+```
 
-| Script                         | Description                    |
-|-------------------------------|--------------------------------|
-| `/api/ingest` (GET)           | Ingest articles                |
-| `/api/preview` (GET)          | View recent article data       |
-| `src/scripts/cluster-articles.ts` | Run K-Means clustering     |
+### Cluster exploration
 
----
+http://localhost:3000/clusters
+
+### Chat inteface
+
+http://localhost:3000/chat
 
 ## Notes
 
