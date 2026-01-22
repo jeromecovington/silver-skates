@@ -20,7 +20,7 @@ function buildClusters(articles: any[]) {
 
   for (const cluster of clusters.values()) {
     cluster.articles.sort(
-      (a, b) =>
+      (a: any, b: any) =>
         new Date(b.publishedAt).getTime() -
         new Date(a.publishedAt).getTime()
     );
