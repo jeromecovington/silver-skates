@@ -6,6 +6,7 @@ import { pipeline } from '@xenova/transformers';
 
 const prisma = new PrismaClient();
 
+// FIXME: Improve typing for embedder
 let embedder: any = null;
 
 export async function POST(req: NextRequest) {

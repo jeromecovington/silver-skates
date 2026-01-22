@@ -1,3 +1,4 @@
+import { Article, ArticlePreview } from '@/types';
 import 'server-only';
 
 const PREVIEW_API_URL = process.env.PREVIEW_API_URL ?? `http://localhost:3000/api/preview?token=${process.env.INGEST_SECRET}`;
@@ -11,9 +12,9 @@ type PreviewScope = {
   toDate?: string;
 };
 
-function stripNonLLMFields(article: any) {
+function stripNonLLMFields(article: Article): ArticlePreview {
   const {
-    embedding,
+    embedding, // eslint-disable-line @typescript-eslint/no-unused-vars
     ...rest
   } = article;
 
@@ -22,7 +23,7 @@ function stripNonLLMFields(article: any) {
 
 export async function fetchPreviewData(
   scope: PreviewScope = {},
-): Promise<any[]> {
+): Promise<ArticlePreview[]> {
   const params = new URLSearchParams();
 
   params.set('limit', String(scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100)));

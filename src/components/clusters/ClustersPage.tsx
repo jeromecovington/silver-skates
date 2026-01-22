@@ -1,19 +1,12 @@
 'use client';
 
+import { ArticlePreview } from '@/types';
 import { useState } from 'react';
-
-type Article = {
-  id: string;
-  title: string;
-  summary: string;
-  body: string;
-  publishedAt: string;
-};
 
 type Cluster = {
   id: string;
   title: string;
-  articles: Article[];
+  articles: ArticlePreview[];
 };
 
 export function ClustersPage({ clusters }: { clusters: Cluster[] }) {
@@ -46,7 +39,7 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
   );
 }
 
-function ArticleItem({ article }: { article: Article }) {
+function ArticleItem({ article }: { article: ArticlePreview }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
