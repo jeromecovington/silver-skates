@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { create } from '@/lib/llm';
 import { fetchPreviewData } from '@/lib/fetchPreviewData';
+import { ChatMessage, LLMCompletion } from '@/lib/llm/local-client';
 
 function shapeContext(
   articles: any[],
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
     maxArticles: scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100),
   });
 
-  const messages = [
+  const messages: ChatMessage[] = [
     {
       role: 'system',
       content: `

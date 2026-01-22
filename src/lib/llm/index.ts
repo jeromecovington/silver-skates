@@ -7,9 +7,13 @@
  */
 
 import { RemoteLLMClient } from './remote-client';
-import { LocalLLMClient } from './local-client';
+import { ChatMessage, LocalLLMClient } from './local-client';
 
 const MODE = process.env.LLM_MODE ?? 'remote';
+
+export type Response = {
+  content: string;
+};
 
 export const llm =
   MODE === 'local' ? new LocalLLMClient() : new RemoteLLMClient();
@@ -19,5 +23,5 @@ export const llm =
  * so other modules can simply `import { create } from '@/lib/llm'`
  */
 export const create = async (
-  messages: { role: 'system' | 'user' | 'assistant'; content: string }[],
+  messages: ChatMessage[],
 ) => llm.create(messages);
