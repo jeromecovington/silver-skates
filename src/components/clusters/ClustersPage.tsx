@@ -12,7 +12,7 @@ type Cluster = {
 export function ClustersPage({ clusters }: { clusters: Cluster[] }) {
   return (
     <main className="mx-6 my-8">
-      {clusters.map(cluster => (
+      {clusters.sort((a, b) => a.id.localeCompare(b.id)).map(cluster => (
         <ClusterCard key={cluster.id} cluster={cluster} />
       ))}
     </main>
@@ -24,7 +24,8 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
 
   return (
     <section className="p-4 pb-2 border border-gray-400 mb-4">
-      <h2 className="cursor-pointer" onClick={() => setOpen(!open)}>
+      <h1 className="text-2xl font-bold mb-2">{cluster.id}</h1>
+      <h2 className="cursor-pointer mb-2" onClick={() => setOpen(!open)}>
         {cluster.title}
       </h2>
       <button className="border text-xs text-gray-400 uppercase p-2 my-2" onClick={() => setOpen(!open)}>
