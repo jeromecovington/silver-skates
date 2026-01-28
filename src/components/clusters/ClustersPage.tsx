@@ -12,7 +12,7 @@ type Cluster = {
 export function ClustersPage({ clusters }: { clusters: Cluster[] }) {
   return (
     <main className="mx-6 my-8">
-      {clusters.map(cluster => (
+      {clusters.sort((a, b) => a.id.localeCompare(b.id)).map(cluster => (
         <ClusterCard key={cluster.id} cluster={cluster} />
       ))}
     </main>
@@ -23,13 +23,17 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="mb-4 border-b pb-4">
-      <h2 className="cursor-pointer font-bold" onClick={() => setOpen(!open)}>
+    <section className="p-4 pb-2 border border-gray-400 mb-4">
+      <h1 className="text-2xl font-bold mb-2">{cluster.id}</h1>
+      <h2 className="cursor-pointer mb-2" onClick={() => setOpen(!open)}>
         {cluster.title}
       </h2>
+      <button className="border text-xs text-gray-400 uppercase p-2 my-2" onClick={() => setOpen(!open)}>
+        {open ? 'Hide Articles' : 'Show Articles'}
+      </button>
 
       {open && (
-        <ul className="mt-2">
+        <ul>
           {cluster.articles.map(article => (
             <ArticleItem key={article.id} article={article} />
           ))}
@@ -40,21 +44,17 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
 }
 
 function ArticleItem({ article }: { article: ArticlePreview }) {
-  const [expanded, setExpanded] = useState(false);
-
   return (
-    <li className="list-disc mb-4 ml-6">
-      <h3 onClick={() => setExpanded(!expanded)}>
+    <li className="pt-2 border-t border-gray-400 mt-2">
+      <h3 className="font-bold">
         {article.title}
       </h3>
 
-      <p>{article.summary}</p>
+      <span className="text-sm mb-2">
+        {new Date(article.publishedAt).toLocaleDateString()}
+      </span>
 
-      {expanded && (
-        <article>
-          <p>{article.body}</p>
-        </article>
-      )}
+      <p className="italic">{article.summary}</p>
     </li>
   );
 }
