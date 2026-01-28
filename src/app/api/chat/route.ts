@@ -6,7 +6,7 @@ import { ArticlePreview, ShapedArticleContext } from '@/types';
 
 function shapeContext(
   articles: ArticlePreview[],
-  opts: { includeBodies: boolean; maxArticles: number }
+  opts: { maxArticles: number }
 ): ShapedArticleContext[] {
   return articles.slice(0, opts.maxArticles).map((a, idx) => ({
     index: idx + 1,
@@ -14,7 +14,6 @@ function shapeContext(
     source: a.source,
     publishedAt: a.publishedAt,
     summary: a.summary,
-    body: opts.includeBodies ? a.body : undefined,
   }));
 }
 
@@ -39,13 +38,11 @@ export async function POST(req: NextRequest) {
   const {
     message,
     scope,           // filters, pinned articles, etc.
-    includeBodies,   // progressive disclosure flag
   } = body;
 
   const previewData = await fetchPreviewData(scope);
 
   const context = shapeContext(previewData, {
-    includeBodies,
     maxArticles: scope.limit ?? Number(process.env.INGEST_MAX_RESULTS ?? 100),
   });
 
