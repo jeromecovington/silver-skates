@@ -16,20 +16,16 @@ type Scope = {
 function ScopeControls({
   scope,
   setScope,
-  includeBodies,
-  setIncludeBodies,
 }: {
   scope: Scope;
   setScope: (s: Scope) => void;
-  includeBodies: boolean;
-  setIncludeBodies: (v: boolean) => void;
 }) {
   return (
     <aside className="w-64 border-r p-3 space-y-4 text-sm">
       <div>
         <label className="block font-semibold">Feed Size</label>
         <select
-          value={scope.limit ?? 10}
+          value={scope.limit ?? 100}
           onChange={(e) =>
             setScope({ ...scope, limit: Number(e.target.value) })
           }
@@ -39,35 +35,33 @@ function ScopeControls({
           <option value={25}>25 articles</option>
           <option value={50}>50 articles</option>
           <option value={100}>100 articles</option>
+          <option value={200}>200 articles</option>
         </select>
       </div>
 
       <div>
         <label className="block font-semibold">Cluster IDs</label>
-        <input
-          placeholder="cluster_2,cluster_4"
-          className="w-full border px-1"
-          onBlur={(e) =>
-            setScope({
-              ...scope,
-              clusterIds: e.target.value
-                .split(',')
-                .map((s) => s.trim())
-                .filter(Boolean),
-            })
-          }
-        />
-      </div>
-
-      <div>
-        <label className="inline-flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={includeBodies}
-            onChange={(e) => setIncludeBodies(e.target.checked)}
-          />
-          Include full articles
-        </label>
+        <select
+          multiple
+          className="w-full border px-1 h-42"
+          onChange={(e) => {
+            const selected = Array.from(
+              e.target.selectedOptions
+            ).map((opt) => opt.value);
+            setScope({ ...scope, clusterIds: selected });
+          }}
+        >
+          <option value="cluster_0">cluster_0</option>
+          <option value="cluster_1">cluster_1</option>
+          <option value="cluster_2">cluster_2</option>
+          <option value="cluster_3">cluster_3</option>
+          <option value="cluster_4">cluster_4</option>
+          <option value="cluster_5">cluster_5</option>
+          <option value="cluster_6">cluster_6</option>
+          <option value="cluster_7">cluster_7</option>
+          <option value="cluster_8">cluster_8</option>
+          <option value="cluster_9">cluster_9</option>
+        </select>
       </div>
     </aside>
   );
@@ -140,10 +134,9 @@ export function ChatPanel() {
   const [input, setInput] = useState('');
 
   const [scope, setScope] = useState<Scope>({
-    limit: 10,
+    limit: 100,
   });
 
-  const [includeBodies, setIncludeBodies] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function sendMessage() {
@@ -165,7 +158,6 @@ export function ChatPanel() {
         body: JSON.stringify({
           message: input,
           scope,
-          includeBodies,
         }),
       });
 
@@ -195,8 +187,6 @@ export function ChatPanel() {
       <ScopeControls
         scope={scope}
         setScope={setScope}
-        includeBodies={includeBodies}
-        setIncludeBodies={setIncludeBodies}
       />
 
       <div className="flex flex-col flex-1">
