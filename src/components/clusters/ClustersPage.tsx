@@ -45,9 +45,13 @@ function ClusterCard({ cluster }: { cluster: Cluster }) {
 function ArticleItem({ article }: { article: ArticlePreview }) {
   return (
     <li className="pt-2 border-t border-gray-400 mt-2">
-      <h3 className="font-bold mb-2">
+      <h3 className="font-bold">
         {article.title}
       </h3>
+
+      <span className="text-sm mb-2">
+        {new Date(article.publishedAt).toLocaleDateString()}
+      </span>
 
       <p className="italic">{article.summary}</p>
     </li>
