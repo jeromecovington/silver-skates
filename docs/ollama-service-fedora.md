@@ -69,9 +69,9 @@ sudo tuned-adm profile latency-performance
 
 ## 7. Test Models
 ```bash
-ollama pull mistral
-ollama run mistral
-time ollama run phi3:mini -p "Summarize this paragraph about climate news."
+ollama pull llama3.1:8b
+ollama run llama3.1:8b
+time ollama run llama3.1:8b -p "Summarize this paragraph about climate news."
 ```
 
 Expected speeds (Ryzen AI Max 385 APU):
@@ -83,7 +83,7 @@ Expected speeds (Ryzen AI Max 385 APU):
 
 ## 8. API Example
 ```bash
-curl -X POST http://localhost:11434/api/generate   -d '{"model":"mistral","prompt":"Classify this headline"}'
+curl -X POST http://localhost:11434/api/generate   -d '{"model":"llama3.1:8b","prompt":"Classify this headline"}'
 ```
 
 ## 9. Summary
