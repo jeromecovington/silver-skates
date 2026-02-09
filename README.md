@@ -117,11 +117,11 @@ This uses OpenAI’s `gpt-3.5-turbo` model to generate concise 2–3 sentence su
 ```bash
 LLM_MODE=local \
 LLM_BASE_URL=http://localhost:11434 \
-LLM_MODEL=mistral \
+LLM_MODEL=llama3.1:8b \
 bun run summarize
 ```
 
-This assumes Ollama running locally or on your LAN, and installation of the `mistral` model.
+This assumes Ollama running locally or on your LAN, and installation of the `llama3.1:8b` model.
 
 ---
 
