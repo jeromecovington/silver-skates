@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 import { TfIdf } from 'natural';
-import { pipeline } from '@xenova/transformers';
+import { pipeline, FeatureExtractionPipeline } from '@xenova/transformers';
 
 const prisma = new PrismaClient();
 
 // FIXME: Improve typing for embedder
-let embedder: any = null;
+let embedder: FeatureExtractionPipeline | null = null;
 
 export async function POST(req: NextRequest) {
   // Read the Authorization header
