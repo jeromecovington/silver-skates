@@ -174,7 +174,7 @@ export function ChatPanel() {
         ...prev,
         {
           role: 'assistant',
-          content: 'Error contacting chat service.',
+          content: `Error contacting chat service: ${err instanceof Error ? err.message : String(err)}`,
         },
       ]);
     } finally {
